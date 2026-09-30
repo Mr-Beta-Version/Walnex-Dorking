@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Walnex-Dorking - Google Dorking</title>
+    <meta name="referrer" content="no-referrer" />
+    <link rel="stylesheet" href="css/style.css" />
+    <style>
+      /* Inline styles ensure the theme colors apply immediately and avoid any flash */
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        height: 100%;
+      }
+      /* Colors come from the :root variables in css/style.css */
+      html,
+      body {
+        background-color: var(--background);
+        color: var(--text);
+      }
+    </style>
+    <script>
+      // Report JS runtime errors to the parent window when embedded (sandbox)
+      (function () {
+        if (window.self === window.top) return;
+        var reported = {};
+        window.addEventListener("error", function (event) {
+          if (!event || !event.message) return;
+          var key =
+            event.message + "|" + (event.filename || "") + "|" + (event.lineno || 0);
+          if (reported[key]) return; // report the same error only once
+          reported[key] = true;
+          try {
+            window.parent.postMessage(
+              {
+                type: "sandbox-runtime-error",
+                payload: {
+                  message: String(event.message).slice(0, 500),
+                  filename: event.filename || "",
+                  lineno: event.lineno || 0,
+                  colno: event.colno || 0,
+                  stack:
+                    event.error && event.error.stack
+                      ? String(event.error.stack).slice(0, 2000)
+                      : "",
+                },
+              },
+              "*"
+            );
+          } catch (e) {
+            /* reporting must never break the page */
+          }
+        });
+      })();
+    </script>
+  </head>
+  <body>
+    <div class="app">
+      <!-- Header -->
+      <header class="app-header">
+        <div class="header-grid-bg"></div>
+        <div class="header-gradient"></div>
+        <div class="header-inner">
+          <div class="title-row">
+            <h1 class="logo">Walnex-Dorking</h1>
+            <span class="logo-byline">by Walnex-Technologies</span>
+          </div>
+          <p class="subtitle">
+           Google dorking tool for
+            security researchers and bug bounty hunters
+          </p>
+
+          <!-- Domain input -->
+          <div class="domain-box">
+            <div class="domain-input-wrap">
+              <input
+                id="domain-input"
+                type="text"
+                placeholder="Enter target domain (e.g., example.com)"
+                aria-label="Target domain"
+                autocomplete="off"
+                spellcheck="false"
+              />
+              <button id="clear-domain" class="clear-btn" type="button" aria-label="Clear target domain" hidden>
+                ✕
+              </button>
+            </div>
+            <p id="domain-hint" class="domain-hint" hidden></p>
+          </div>
+        </div>
+      </header>
+
+      <!-- Filters -->
+      <div class="app-filters">
+        <div class="filters-inner">
+          <div class="search-wrap">
+            <svg
+              class="search-icon"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              aria-hidden="true"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+              />
+            </svg>
+            <input
+              id="search-input"
+              type="text"
+              placeholder="Search dorks..."
+              aria-label="Search dorks"
+              autocomplete="off"
+              spellcheck="false"
+            />
+          </div>
+          <div class="categories-bar">
+            <button
+              id="categories-toggle"
+              class="categories-toggle"
+              type="button"
+              aria-expanded="false"
+              aria-controls="tags-row"
+            >
+              <svg
+                class="chevron"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                aria-hidden="true"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M19 9l-7 7-7-7"
+                />
+              </svg>
+              <span id="categories-toggle-label">Categories</span>
+              <span id="categories-count" class="categories-count">0</span>
+            </button>
+            <div id="active-tag-chip" class="active-tag-chip" hidden></div>
+          </div>
+          <div id="tags-row" class="tags-row" hidden></div>
+        </div>
+      </div>
+
+      <!-- Results count + bulk open -->
+      <div class="results-info">
+        <p class="results-count">
+          Showing <span id="shown-count" class="accent">0</span> of
+          <span id="total-count">0</span> dorks
+        </p>
+        <div id="bulk-open-row" class="bulk-open-row" aria-label="Open dork tabs in batches of ten"></div>
+      </div>
+
+      <!-- Dork grid -->
+      <main class="grid-main">
+        <div id="dork-grid" class="dork-grid"></div>
+        <div id="empty-state" class="empty-state" hidden>
+          <p class="empty-text">No dorks match your filter</p>
+          <button id="clear-filters" class="empty-clear" type="button">
+            Clear filters
+          </button>
+        </div>
+      </main>
+
+      <!-- Footer -->
+      <footer class="app-footer">
+        <div class="footer-inner">
+          <div class="footer-brand">
+            <span class="name">Walnex-Dorking</span>
+            <span class="footer-byline">by Walnex-Technologies</span>
+          </div>
+          <p class="footer-note">
+            For educational and authorized security
+            testing only
+          </p>
+          <div class="footer-owner">
+            <div class="owner-head">
+              <span class="owner-label">Owner</span>
+              <span class="owner-name">Muhammad Walid</span>
+            </div>
+            <a
+              class="owner-link"
+              href="https://github.com/Mr-Beta-Version"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              GitHub: Mr-Beta-Version
+            </a>
+            <a class="owner-link" href="mailto:mdwalidmahmud@gmail.com">
+              mdwalidmahmud@gmail.com
+            </a>
+          </div>
+        </div>
+      </footer>
+    </div>
+
+    <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+
+    <script src="js/data.js"></script>
+    <script src="js/app.js"></script>
+  </body>
+</html>
