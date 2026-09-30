@@ -25,7 +25,7 @@ A curated collection of Google dorking queries for security researchers and bug 
 
 ## Usage
 
-1. Open `index.html`.
+1. Open https://mr-beta-version.github.io/Walnex-Dorking/
 2. Type or paste a target domain into the **"Enter target domain"** field (URLs are auto-cleaned to a bare domain).
 3. Optionally search or filter by category tag to narrow the list.
 4. Click any dork card to open that query in a new tab, or use the **Tabs X-Y** buttons to open a whole batch (10 at a time) of the currently filtered dorks.
