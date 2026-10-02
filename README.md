@@ -53,7 +53,7 @@ All dork definitions live in `js/data.js` as entries in the `dorkCategories` arr
 ---
 
 
-## Browser notes
+## Browser permission
 
 - Multiple tabs opened at once (bulk buttons) require the browser's pop-up blocker to allow the site - most browsers only allow one automatic `window.open()` per click otherwise.
 - The page sends no referrer (`<meta name="referrer" content="no-referrer">`) when navigating to dork targets.
