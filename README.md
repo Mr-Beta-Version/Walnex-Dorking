@@ -2,6 +2,7 @@
 
 **by Walnex-Technologies**
 
+
 A curated collection of Google dorking queries for security researchers and bug bounty hunters. Enter a target domain, browse categorized dorks, and launch searches directly - one at a time or in bulk.
 
 > For educational and **authorized** security testing only.
